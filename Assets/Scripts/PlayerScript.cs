@@ -25,33 +25,41 @@ public class PlayerScript : MonoBehaviour
     {
         #region Movement
 
+        //if not pressing button, slow player down
         if (Math.Abs(Input.GetAxisRaw("Horizontal")) < .05)
-            xSpd = xSpd.IncrementTo(0, .1f);
+            xSpd = xSpd.IncrementTo(0, isGrounded ? MoveSpeed : .1f);
 
+        //x movement (slower if not on ground)
         if (isGrounded)
             xSpd += Input.GetAxisRaw("Horizontal") * MoveSpeed;
         else
             xSpd += Input.GetAxisRaw("Horizontal") * MoveSpeed / 25;
 
+        //limit x movement speed
         if (Math.Abs(xSpd) > MoveSpeed)
             xSpd = MoveSpeed * (xSpd < 0 ? -1 : 1);
 
+        //gravity
         ySpd = isGrounded ? 0 : (ySpd - .25f);
 
+        //jumping
         if (Input.GetKeyDown(KeyCode.Space))
         {
             if (isGrounded || wallCollision)
             {
                 ySpd = JumpSpeed;
 
+                //push off from the wall if wall jumping
                 if (collisionLeft) xSpd = MoveSpeed;
                 else if (collisionRight) xSpd = MoveSpeed*-1;
             }
         }
 
+        //collision with walls
         if (xSpd < 0 && collisionLeft) xSpd = 0;
         if (xSpd > 0 && collisionRight) xSpd = 0;
 
+        //move the player based on the x and y computed above
         transform.Translate(xSpd * Time.deltaTime, ySpd * Time.deltaTime, 0, transform);
 
         #endregion
