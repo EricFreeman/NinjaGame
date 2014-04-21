@@ -66,6 +66,13 @@ public class PlayerScript : MonoBehaviour
 
         #region Collisions
 
+        RaycastHit up;
+        if (Physics.Raycast(transform.position, Vector3.up, out up, _rayDistance))
+        {
+            Debug.DrawLine(up.point, up.point + Vector3.up * 5f, Color.red);
+            ySpd = -1f;
+        }
+
         RaycastHit down;
         isGrounded = Physics.Raycast(transform.position, Vector3.down, out down, _rayDistance);
         if (isGrounded)
