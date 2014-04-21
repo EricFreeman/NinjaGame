@@ -1,42 +1,48 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerScript : MonoBehaviour
 {
-    public float MoveSpeed = 15f;
-    public float JumpSpeed = 250f;
+    #region Properties
+
+    public float MoveSpeed = 8f;
+    public float JumpSpeed = 8f;
 
     private float _rayDistance = .6f;
 
     private bool isGrounded;
     private bool collisionRight;
     private bool collisionLeft;
-
     private bool wallCollision { get { return collisionLeft || collisionRight; } }
 
-    // Use this for initialization
-    void Start()
-    {
+    private float ySpd;
+    private float xSpd;
 
-    }
+    #endregion
 
     // Update is called once per frame
     void Update()
     {
         #region Movement
 
-        float spd = Input.GetAxisRaw("Horizontal") * MoveSpeed;
+        if (isGrounded)
+            xSpd = 0;
 
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        xSpd = Input.GetAxisRaw("Horizontal") * MoveSpeed;
+
+        ySpd = isGrounded ? 0 : (ySpd - .25f);
+
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            rigidbody.velocity = Vector3.zero;
-            rigidbody.AddForce(0, JumpSpeed, 0);
+            if (isGrounded || wallCollision)
+            {
+                ySpd = JumpSpeed;
+            }
         }
 
-        if (spd < 0 && collisionLeft) spd = 0;
-        if (spd > 0 && collisionRight) spd = 0;
+        if (xSpd < 0 && collisionLeft) xSpd = 0;
+        if (xSpd > 0 && collisionRight) xSpd = 0;
 
-        transform.Translate(spd*Time.deltaTime, 0, 0, transform);
+        transform.Translate(xSpd * Time.deltaTime, ySpd * Time.deltaTime, 0, transform);
 
         #endregion
 
