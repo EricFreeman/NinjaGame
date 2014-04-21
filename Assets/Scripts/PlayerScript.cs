@@ -55,7 +55,7 @@ public class PlayerScript : MonoBehaviour
         if (collisionLeft)
         {
             Debug.DrawLine(left.point, left.point + Vector3.left * 5f, Color.red);
-            transform.position = left.point + Vector3.right * .5f;
+            transform.position = left.point + Vector3.right * .51f;
         }
 
         RaycastHit right;
@@ -63,7 +63,7 @@ public class PlayerScript : MonoBehaviour
         if (collisionRight)
         {
             Debug.DrawLine(right.point, right.point + Vector3.right * 5f, Color.red);
-            transform.position = right.point + Vector3.left * .5f;
+            transform.position = right.point + Vector3.left * .51f;
         }
 
         #endregion
