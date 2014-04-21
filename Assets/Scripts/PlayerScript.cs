@@ -40,7 +40,7 @@ public class PlayerScript : MonoBehaviour
             xSpd = MoveSpeed * (xSpd < 0 ? -1 : 1);
 
         //gravity
-        ySpd = isGrounded ? 0 : (ySpd - .25f);
+        ySpd = isGrounded ? 0 : (ySpd - .33f);
 
         //jumping
         if (Input.GetKeyDown(KeyCode.Space))
