@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using Assets.Scripts.Extensions;
+using UnityEngine;
 
 public class PlayerScript : MonoBehaviour
 {
@@ -19,15 +21,20 @@ public class PlayerScript : MonoBehaviour
 
     #endregion
 
-    // Update is called once per frame
     void Update()
     {
         #region Movement
 
-        if (isGrounded)
-            xSpd = 0;
+        if (Math.Abs(Input.GetAxisRaw("Horizontal")) < .05)
+            xSpd = xSpd.IncrementTo(0, .25f);
 
-        xSpd = Input.GetAxisRaw("Horizontal") * MoveSpeed;
+        if (isGrounded)
+            xSpd += Input.GetAxisRaw("Horizontal") * MoveSpeed;
+        else
+            xSpd += Input.GetAxisRaw("Horizontal") * MoveSpeed / 4;
+
+        if (Math.Abs(xSpd) > MoveSpeed)
+            xSpd = MoveSpeed * (xSpd < 0 ? -1 : 1);
 
         ySpd = isGrounded ? 0 : (ySpd - .25f);
 
@@ -36,6 +43,10 @@ public class PlayerScript : MonoBehaviour
             if (isGrounded || wallCollision)
             {
                 ySpd = JumpSpeed;
+
+                if (collisionLeft) xSpd = MoveSpeed;
+                else if (collisionRight) xSpd = MoveSpeed*-1;
+                else xSpd /= 4;
             }
         }
 
@@ -75,3 +86,4 @@ public class PlayerScript : MonoBehaviour
         #endregion
     }
 }
+
