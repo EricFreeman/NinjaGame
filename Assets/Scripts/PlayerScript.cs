@@ -26,12 +26,12 @@ public class PlayerScript : MonoBehaviour
         #region Movement
 
         if (Math.Abs(Input.GetAxisRaw("Horizontal")) < .05)
-            xSpd = xSpd.IncrementTo(0, .25f);
+            xSpd = xSpd.IncrementTo(0, .1f);
 
         if (isGrounded)
             xSpd += Input.GetAxisRaw("Horizontal") * MoveSpeed;
         else
-            xSpd += Input.GetAxisRaw("Horizontal") * MoveSpeed / 4;
+            xSpd += Input.GetAxisRaw("Horizontal") * MoveSpeed / 25;
 
         if (Math.Abs(xSpd) > MoveSpeed)
             xSpd = MoveSpeed * (xSpd < 0 ? -1 : 1);
@@ -46,7 +46,6 @@ public class PlayerScript : MonoBehaviour
 
                 if (collisionLeft) xSpd = MoveSpeed;
                 else if (collisionRight) xSpd = MoveSpeed*-1;
-                else xSpd /= 4;
             }
         }
 
