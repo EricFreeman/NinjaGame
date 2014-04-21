@@ -70,7 +70,7 @@ public class PlayerScript : MonoBehaviour
         if (Physics.Raycast(transform.position, Vector3.up, out up, _rayDistance))
         {
             Debug.DrawLine(up.point, up.point + Vector3.up * 5f, Color.red);
-            ySpd = -1f;
+            if (ySpd > 0) ySpd = -1f;
         }
 
         RaycastHit down;
